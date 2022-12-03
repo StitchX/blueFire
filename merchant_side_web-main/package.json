@@ -1,0 +1,20 @@
+{
+    "id": "",
+    "name": "",
+    "version": "",
+    "description": "",
+    "keywords": [
+        "",
+        "",
+        ""
+    ],
+    "dcloudext": {
+        "category": [
+            "",
+            ""
+        ]
+    },
+    "dependencies": {
+        "uview-ui": "^2.0.29"
+    }
+}

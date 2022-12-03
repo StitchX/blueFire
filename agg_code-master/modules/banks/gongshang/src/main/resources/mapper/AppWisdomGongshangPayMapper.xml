@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blue.gongshang.mapper.AppWisdomGongshangPayMapper">
+
+    <resultMap type="com.blue.gongshang.entity.AppWisdomGongshangPay" id="AppWisdomGongshangPayMap">
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="merchantName" column="merchant_name" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="merchantId" column="merchant_id" jdbcType="INTEGER"/>
+        <result property="posId" column="pos_id" jdbcType="VARCHAR"/>
+        <result property="bankName" column="bank_name" jdbcType="VARCHAR"/>
+        <result property="bankCode" column="bank_code" jdbcType="VARCHAR"/>
+        <result property="branchId" column="branch_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="callbackTime" column="callback_time" jdbcType="TIMESTAMP"/>
+        <result property="openId" column="open_id" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="bankOrderId" column="bank_order_id" jdbcType="VARCHAR"/>
+        <result property="otherOrderId" column="other_order_id" jdbcType="VARCHAR"/>
+        <result property="mchtNo" column="mcht_no" jdbcType="VARCHAR"/>
+        <result property="reqTime" column="req_time" jdbcType="VARCHAR"/>
+        <result property="num" column="num" jdbcType="INTEGER"/>
+        <result property="updatedAt" column="updated_at" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryByOtherOrderId" resultMap="AppWisdomGongshangPayMap">
+        <include refid="baseSql"/>
+        where other_order_id = #{otherOrderId}
+    </select>
+
+    <select id="queryById" resultMap="AppWisdomGongshangPayMap">
+        <include refid="baseSql"/>
+        where order_id = #{orderId}
+    </select>
+    
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into app_wisdom_gongshang_pay(order_id, merchant_name, price, status, merchant_id, pos_id, bank_name, bank_code, branch_id, create_time, callback_time, open_id, type, bank_order_id, other_order_id, mcht_no, req_time, num, updated_at)
+        values (#{orderId}, #{merchantName}, #{price}, #{status}, #{merchantId}, #{posId}, #{bankName}, #{bankCode}, #{branchId}, #{createTime}, #{callbackTime}, #{openId}, #{type}, #{bankOrderId}, #{otherOrderId}, #{mchtNo}, #{reqTime}, #{num}, #{updatedAt})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="orderId" useGeneratedKeys="true">
+        insert into app_wisdom_gongshang_pay(order_id, merchant_name, price, status, merchant_id, pos_id, bank_name, bank_code, branch_id, create_time, callback_time, open_id, type, bank_order_id, other_order_id, mcht_no, req_time, num, updated_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.orderId}, #{entity.merchantName}, #{entity.price}, #{entity.status}, #{entity.merchantId}, #{entity.posId}, #{entity.bankName}, #{entity.bankCode}, #{entity.branchId}, #{entity.createTime}, #{entity.callbackTime}, #{entity.openId}, #{entity.type}, #{entity.bankOrderId}, #{entity.otherOrderId}, #{entity.mchtNo}, #{entity.reqTime}, #{entity.num}, #{entity.updatedAt})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="orderId" useGeneratedKeys="true">
+        insert into app_wisdom_gongshang_pay(order_id, merchant_name, price, status, merchant_id, pos_id, bank_name, bank_code, branch_id, create_time, callback_time, open_id, type, bank_order_id, other_order_id, mcht_no, req_time, num, updated_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.orderId}, #{entity.merchantName}, #{entity.price}, #{entity.status}, #{entity.merchantId}, #{entity.posId}, #{entity.bankName}, #{entity.bankCode}, #{entity.branchId}, #{entity.createTime}, #{entity.callbackTime}, #{entity.openId}, #{entity.type}, #{entity.bankOrderId}, #{entity.otherOrderId}, #{entity.mchtNo}, #{entity.reqTime}, #{entity.num}, #{entity.updatedAt})
+        </foreach>
+        on duplicate key update
+         order_id = values(order_id) , merchant_name = values(merchant_name) , price = values(price) , status = values(status) , merchant_id = values(merchant_id) , pos_id = values(pos_id) , bank_name = values(bank_name) , bank_code = values(bank_code) , branch_id = values(branch_id) , create_time = values(create_time) , callback_time = values(callback_time) , open_id = values(open_id) , type = values(type) , bank_order_id = values(bank_order_id) , other_order_id = values(other_order_id) , mcht_no = values(mcht_no) , req_time = values(req_time) , num = values(num) , updated_at = values(updated_at)     </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update app_wisdom_gongshang_pay
+        <set>
+            <if test="merchantName != null and merchantName != ''">
+                merchant_name = #{merchantName},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="merchantId != null">
+                merchant_id = #{merchantId},
+            </if>
+            <if test="posId != null and posId != ''">
+                pos_id = #{posId},
+            </if>
+            <if test="bankName != null and bankName != ''">
+                bank_name = #{bankName},
+            </if>
+            <if test="bankCode != null and bankCode != ''">
+                bank_code = #{bankCode},
+            </if>
+            <if test="branchId != null and branchId != ''">
+                branch_id = #{branchId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="callbackTime != null">
+                callback_time = #{callbackTime},
+            </if>
+            <if test="openId != null and openId != ''">
+                open_id = #{openId},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="bankOrderId != null and bankOrderId != ''">
+                bank_order_id = #{bankOrderId},
+            </if>
+            <if test="otherOrderId != null and otherOrderId != ''">
+                other_order_id = #{otherOrderId},
+            </if>
+            <if test="mchtNo != null and mchtNo != ''">
+                mcht_no = #{mchtNo},
+            </if>
+            <if test="reqTime != null and reqTime != ''">
+                req_time = #{reqTime},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="updatedAt != null and updatedAt != ''">
+                updated_at = #{updatedAt},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+
+    <sql id ="baseSql">
+        select
+          order_id, merchant_name, price, status, merchant_id, pos_id, bank_name, bank_code, branch_id, create_time, callback_time, open_id, type, bank_order_id, other_order_id, mcht_no, req_time, num, updated_at        from app_wisdom_gongshang_pay
+    </sql>
+</mapper>
+

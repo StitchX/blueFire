@@ -1,0 +1,304 @@
+before_script:
+    - git log|head -n 11||true
+
+stages:
+  - 打包
+  - 发布
+  - 回滚
+
+#cache:
+#  key: ${CI_COMMIT_REF_NAME}
+#  paths:
+#   - node_modules/
+#   - crm/
+
+##################################################################################################
+打包:
+  stage: 打包
+  only:
+    - main
+  script:
+    - echo "准备生产打包";
+    - id
+    - cachePath=/data/agg/gitlab-data/cache/supervision/crm_web/main/artifacts;
+    - if [ ! -d $cachePath/crm ] ;then mkdir -p $cachePath/crm; fi;
+    - if [ ! -d $cachePath/node_modules ] ;then mkdir -p $cachePath/node_modules; fi;
+    - packageMd5sum=$(md5sum package.json)
+    - echo 'package.json md5sum值:'$packageMd5sum
+    - if [ ! -f /tmp/packageMd5sum.txt ] ;then touch /tmp/packageMd5sum.txt;echo $packageMd5sum > /tmp/packageMd5sum.txt; echo "执行打包"; npm install --unsafe-perm=true --allow-root && echo "打包完成" && cp -rf node_modules $cachePath/; fi;
+    - if [ -f /tmp/packageMd5sum.txt ] ;then oldMd5sum=$(cat /tmp/packageMd5sum.txt); echo "oldMd5sum="$oldMd5sum; if [ ${oldMd5sum% package.json} = ${packageMd5sum% package.json} ];then echo "依赖包没有变化，不需要重新install";echo "正在从缓存复制依赖包"; cp -fr $cachePath/node_modules . ; else echo "依赖包有变化，执行打包"; npm install --unsafe-perm=true --allow-root && cp -rf node_modules $cachePath/; fi; fi;
+    - npm run build:crm
+    - if test -d crm ; then rm -rf $cachePath/crm && \cp -fr crm $cachePath/ && echo '打包完成';else echo "打包失败" && false; fi
+  tags:
+    - ng1
+  allow_failure: false
+
+S1发布:
+  stage: 发布
+  only:
+    - main
+  script:
+    - echo "部署"
+    - cachePath=/data/agg/gitlab-data/cache/supervision/crm_web/main/artifacts;
+    - if test -d /web/crm_bak; then rm -rf /web/crm_bak ;fi;
+    - if test -d /web/crm; then mv /web/crm{,_bak}; fi;
+    - cp -fr $cachePath/crm /web/;
+  needs: [打包]
+  tags:
+    - ng1
+  allow_failure: false
+  when: manual
+
+S1回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/crm
+    - mv /web/crm{_bak,}
+  tags:
+    - ng1
+  needs: [S1发布]
+  when: manual
+
+
+S2发布:
+  stage: 发布
+  only:
+    - main
+  script:
+    - echo "部署"
+    - cachePath=/data/agg/gitlab-data/cache/supervision/crm_web/main/artifacts;
+    - if test -d /web/crm_bak; then rm -rf /web/crm_bak ;fi;
+    - if test -d /web/crm; then mv /web/crm{,_bak}; fi;
+    - cp -fr $cachePath/crm /web/;
+  needs: [打包]
+  tags:
+    - ng2
+  allow_failure: false
+  when: manual
+
+S2回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/crm
+    - mv /web/crm{_bak,}
+  tags:
+    - ng2
+  needs: [S2发布]
+  when: manual
+
+
+S3发布:
+  stage: 发布
+  only:
+    - main
+  script:
+    - echo "部署"
+    - cachePath=/data/agg/gitlab-data/cache/supervision/crm_web/main/artifacts;
+    - if test -d /web/crm_bak; then rm -rf /web/crm_bak ;fi;
+    - if test -d /web/crm; then mv /web/crm{,_bak}; fi;
+    - cp -fr $cachePath/crm /web/;
+  needs: [打包]
+  tags:
+    - ng3
+  allow_failure: false
+  when: manual
+
+S3回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/crm
+    - mv /web/crm{_bak,}
+  tags:
+    - ng3
+  needs: [S3发布]
+  when: manual
+
+
+S4发布:
+  stage: 发布
+  only:
+    - main
+  script:
+    - echo "部署"
+    - cachePath=/data/agg/gitlab-data/cache/supervision/crm_web/main/artifacts;
+    - if test -d /web/crm_bak; then rm -rf /web/crm_bak ;fi;
+    - if test -d /web/crm; then mv /web/crm{,_bak}; fi;
+    - cp -fr $cachePath/crm /web/;
+  needs: [打包]
+  tags:
+    - ng4
+  allow_failure: false
+  when: manual
+
+S4回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/crm
+    - mv /web/crm{_bak,}
+  tags:
+    - ng4
+  needs: [S4发布]
+  when: manual
+
+
+S5发布:
+  stage: 发布
+  only:
+    - main
+  script:
+    - echo "部署"
+    - cachePath=/data/agg/gitlab-data/cache/supervision/crm_web/main/artifacts;
+    - if test -d /web/crm_bak; then rm -rf /web/crm_bak ;fi;
+    - if test -d /web/crm; then mv /web/crm{,_bak}; fi;
+    - cp -fr $cachePath/crm /web/;
+  needs: [打包]
+  tags:
+    - ng5
+  allow_failure: false
+  when: manual
+
+S5回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/crm
+    - mv /web/crm{_bak,}
+  tags:
+    - ng5
+  needs: [S5发布]
+  when: manual
+
+
+S6发布:
+  stage: 发布
+  only:
+    - main
+  script:
+    - echo "部署"
+    - cachePath=/data/agg/gitlab-data/cache/supervision/crm_web/main/artifacts;
+    - if test -d /web/crm_bak; then rm -rf /web/crm_bak ;fi;
+    - if test -d /web/crm; then mv /web/crm{,_bak}; fi;
+    - cp -fr $cachePath/crm /web/;
+  needs: [打包]
+  tags:
+    - ng6
+  allow_failure: false
+  when: manual
+
+S6回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/crm
+    - mv /web/crm{_bak,}
+  tags:
+    - ng6
+  needs: [S6发布]
+  when: manual
+
+
+
+
+
+
+#################################开发环境部署####################################
+开发打包:
+  stage: 打包
+  only:
+    - /^dev.*$/
+  script:
+    - echo "开发打包"
+    - npm install
+    - npm run build:crm
+    - if [ ! -d ../artifacts/crm ] ;then mkdir -p ../artifacts/crm; fi;
+    - if test -d crm ; then rm -rf ../artifacts/crm;\cp -fr crm ../artifacts/crm;echo '打包完成';else echo "打包失败" && false; fi
+  tags:
+    - dev
+  allow_failure: false
+
+开发发布:
+  stage: 发布
+  only:
+    - /^dev.*$/
+  script:
+    - echo "部署"
+    - if test -d /web/crm_bak; then rm -rf /web/crm_bak ;fi
+    - if test -d /web/crm; then mv /web/crm{,_bak}; fi
+    - cp -fr ../artifacts/crm /web/crm
+  needs: [开发打包]
+  tags:
+    - dev
+  allow_failure: false
+
+开发回滚:
+  stage: 回滚
+  only:
+    - /^dev.*$/
+  script:
+    - echo "回滚"
+    - rm -rf /web/crm
+    - mv /web/crm{_bak,}
+  tags:
+    - dev
+  needs: [开发发布]
+  when: manual
+
+
+
+
+测试打包:
+  stage: 打包
+  only:
+    - /^test.*$/
+  script:
+    - echo "开发打包"
+    - npm install
+    - npm run build:crm
+    - if [ ! -d ../artifacts/crm ] ;then mkdir -p ../artifacts/crm; fi;
+    - if test -d crm ; then rm -rf ../artifacts/crm;\cp -fr crm ../artifacts/crm;echo '打包完成';else echo "打包失败" && false; fi
+  tags:
+    - test
+  allow_failure: false
+
+测试发布:
+  stage: 发布
+  only:
+    - /^test.*$/
+  script:
+    - echo "部署"
+    - if test -d /web/crm_bak; then rm -rf /web/crm_bak ;fi
+    - if test -d /web/crm; then mv /web/crm{,_bak}; fi
+    - cp -fr ../artifacts/crm /web/crm
+  needs: [测试打包]
+  tags:
+    - test
+  allow_failure: false
+测试回滚:
+  stage: 回滚
+  only:
+    - /^test.*$/
+  script:
+    - echo "回滚"
+    - rm -rf /web/crm
+    - mv /web/crm{_bak,} 
+  tags:
+    - test
+  needs: [测试发布]
+  when: manual
+

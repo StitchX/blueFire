@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fire.admin.mapper.StatisticalMapper">
+
+    <resultMap id="supervisionStatisticalMap" type="com.fire.admin.entity.SupervisionStatistical">
+        <id property="id" column="id"/>
+        <result property="statisticalDate" column="statistical_date"/>
+        <result property="supervisionId" column="supervision_id"/>
+        <result property="supervisionName" column="supervision_name"/>
+        <result property="todayRegulatoryMerchantCount" column="total_regulatory_merchant_count"/>
+        <result property="totalRegulatoryPayMerchantCount" column="total_regulatory_pay_merchant_count"/>
+        <result property="totalRegulatoryActiveMerchantCount" column="total_regulatory_active_merchant_count"/>
+        <result property="totalPubulicInformationCount" column="total_pubulic_information_count"/>
+        <result property="todayRegulatoryMerchantCount" column="today_regulatory_merchant_count"/>
+        <result property="todayRegulatoryPayMerchantCount" column="today_regulatory_pay_merchant_count"/>
+        <result property="todayRegulatoryActiveMerchantCount" column="today_regulatory_active_merchant_count"/>
+        <result property="todayPubulicInformationCount" column="today_pubulic_information_count"/>
+        <result property="todayRiskRedCount" column="today_risk_red_count"/>
+        <result property="todayRiskYellowCount" column="today_risk_yellow_count"/>
+        <result property="todayRiskGreenCount" column="today_risk_green_count"/>
+        <result property="yearRegulatoryRemindCount" column="year_regulatory_remind_count"/>
+        <result property="yearPolicyPreachCount" column="year_policy_preach_count"/>
+        <result property="todayRegulatoryRemindCount" column="today_regulatory_remind_count"/>
+        <result property="todayPolicyPreachCount" column="today_policy_preach_count"/>
+    </resultMap>
+
+    <resultMap id="titleDataMap" type="com.fire.admin.vo.TitleDataVo">
+        <result property="totalRegulatoryMerchantCount" column="total_regulatory_merchant_count"/>
+        <result property="todayRegulatoryMerchantCount" column="today_regulatory_merchant_count"/>
+        <result property="totalPubulicInformationCount" column="total_pubulic_information_count"/>
+        <result property="todayPubilicInformationCount" column="today_pubulic_information_count"/>
+        <result property="yearRegulatoryRemindCount" column="year_regulatory_remind_count"/>
+        <result property="yearPolicyPreachCount" column="year_policy_preach_count"/>
+        <result property="redCount" column="today_risk_red_count"/>
+        <result property="yellowCount" column="today_risk_yellow_count"/>
+        <result property="greenCount" column="today_risk_green_count"/>
+    </resultMap>
+
+    <resultMap id="RegulatoryMerchantDataMap" type="com.fire.admin.vo.RegulatoryMerchantDataVo$EachMerchant">
+        <result property="supervisionId" column="supervision_id"/>
+        <result property="supervisionName" column="supervision_name"/>
+        <result property="merchantCount" column="today_regulatory_merchant_count"/>
+    </resultMap>
+
+    <resultMap id="publicInformationDataMap" type="com.fire.admin.vo.PublicInformationDataVo">
+        <result property="supervisionId" column="supervision_id"/>
+        <result property="supervisionName" column="supervision_name"/>
+        <result property="publicInformationCount" column="today_pubulic_information_count"/>
+    </resultMap>
+
+    <resultMap id="activeMerchantDataMap" type="com.fire.admin.vo.ActiveMerchantDataVo">
+        <result property="supervisionId" column="supervision_id"/>
+        <result property="supervisionName" column="supervision_name"/>
+        <result property="activeMerchantCount" column="today_regulatory_active_merchant_count"/>
+        <result property="totalMerchantCount" column="total_regulatory_pay_merchant_count"/>
+    </resultMap>
+
+    <resultMap id="policyPreachDataMap" type="com.fire.admin.vo.PolicyPreachDataVo">
+        <result property="supervisionId" column="supervision_id"/>
+        <result property="supervisionName" column="supervision_name"/>
+        <result property="policyPreachCount" column="today_policy_preach_count"/>
+        <result property="regulatoryRemindCount" column="today_regulatory_remind_count"/>
+    </resultMap>
+
+    <sql id="common_field">
+        supervision_id,
+        supervision_name,
+    </sql>
+
+    <select id="queryTitleData" resultMap="titleDataMap">
+        SELECT
+        SUM(today_regulatory_merchant_count) AS today_regulatory_merchant_count,
+        SUM(total_regulatory_merchant_count) AS total_regulatory_merchant_count,
+        SUM(total_pubulic_information_count) AS total_pubulic_information_count,
+        SUM(today_pubulic_information_count) AS today_pubulic_information_count,
+        SUM(today_risk_green_count) AS today_risk_green_count,
+        SUM(today_risk_yellow_count) AS today_risk_yellow_count,
+        SUM(today_risk_red_count) AS today_risk_red_count,
+        SUM(year_policy_preach_count) year_policy_preach_count,
+        SUM(year_regulatory_remind_count) year_regulatory_remind_count,
+        SUM(today_regulatory_active_merchant_count) AS today_regulatory_active_merchant_count
+        FROM supervision_statistical_data
+        <where>
+            <if test="supervisionIds != null and supervisionIds.size() > 0">
+                supervision_id IN (
+                <foreach collection="supervisionIds" item="supervisionId" separator=",">
+                    #{supervisionId}
+                </foreach>
+                )
+            </if>
+            AND DATE(statistical_date) = CURDATE()
+        </where>
+    </select>
+
+    <select id="queryRegulatoryMerchantData" resultMap="RegulatoryMerchantDataMap">
+        SELECT
+        <include refid="common_field"/>
+        SUM(today_regulatory_merchant_count) AS today_regulatory_merchant_count
+        FROM supervision_statistical_data
+        <where>
+            <if test="supervisionIds != null and supervisionIds.size() > 0">
+                supervision_id IN (
+                <foreach collection="supervisionIds" item="supervisionId" separator=",">
+                    #{supervisionId}
+                </foreach>
+                )
+            </if>
+            <if test="param.startTime != null and param.startTime != '' and param.endTime != null and param.endTime != ''">
+                AND statistical_date BETWEEN #{param.startTime} AND #{param.endTime}
+            </if>
+        </where>
+        GROUP BY supervision_id, supervision_name
+    </select>
+
+    <select id="queryPublicInformationData" resultMap="publicInformationDataMap">
+        SELECT
+        <include refid="common_field"/>
+        SUM(today_pubulic_information_count) AS today_pubulic_information_count
+        FROM supervision_statistical_data
+        <where>
+            <if test="supervisionIds != null and supervisionIds.size() > 0">
+                supervision_id IN (
+                <foreach collection="supervisionIds" item="supervisionId" separator=",">
+                    #{supervisionId}
+                </foreach>
+                )
+            </if>
+            <if test="param.startTime != null and param.startTime != '' and param.endTime != null and param.endTime != ''">
+                AND statistical_date BETWEEN #{param.startTime} AND #{param.endTime}
+            </if>
+        </where>
+        GROUP BY supervision_id, supervision_name
+    </select>
+
+    <select id="queryActiveMerchantData" resultMap="activeMerchantDataMap">
+        SELECT
+        <include refid="common_field"/>
+        total_regulatory_pay_merchant_count,
+        today_regulatory_active_merchant_count
+        FROM supervision_statistical_data
+        <where>
+            <if test="supervisionIds != null and supervisionIds.size() > 0">
+                supervision_id IN (
+                <foreach collection="supervisionIds" item="supervisionId" separator=",">
+                    #{supervisionId}
+                </foreach>
+                )
+            </if>
+            <if test="param.endTime != null and param.endTime != ''">
+                AND statistical_date = #{param.endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryPolicyPreachData" resultMap="policyPreachDataMap">
+        SELECT
+        <include refid="common_field"/>
+        SUM(today_policy_preach_count) AS today_policy_preach_count,
+        SUM(today_regulatory_remind_count) AS today_regulatory_remind_count
+        FROM supervision_statistical_data
+        <where>
+            <if test="supervisionIds != null and supervisionIds.size() > 0">
+                supervision_id IN (
+                <foreach collection="supervisionIds" item="supervisionId" separator=",">
+                    #{supervisionId}
+                </foreach>
+                )
+            </if>
+            <if test="param.startTime != null and param.startTime != '' and param.endTime != null and param.endTime != ''">
+                AND statistical_date BETWEEN #{param.startTime} AND #{param.endTime}
+            </if>
+        </where>
+        GROUP BY supervision_id, supervision_name
+    </select>
+
+</mapper>

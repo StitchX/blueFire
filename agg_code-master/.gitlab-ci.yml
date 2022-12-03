@@ -1,0 +1,400 @@
+stages:
+    - 打包
+    - 启动
+    - 线上验证
+    - 回滚
+    - 完成
+
+before_script:
+    - git log|head -n 11||true
+
+cache:
+    key: ${CI_PROJECT_NAME}
+    paths:
+        - jars/
+
+# 打包-crm:
+#     stage: 打包
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "打包-crm"
+#         - package 'modules/crm' 
+#         - echo $CI_COMMIT_REF_NAME
+#     tags:
+#         - server4
+#         - server5
+#     allow_failure: false
+#
+# 启动-crm:
+#     stage: 启动
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "启动-crm-master"
+#         - startup crm
+#     tags:
+#         - server4
+#         - server5
+#     when: manual
+#     allow_failure: false
+#     needs: [ 打包-crm ]
+
+# 验证-crm:
+#     stage: 线上验证
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "验证-crm-master" && ${STATUS:-false}
+#     tags:
+#         - server4
+#         - server5
+#     allow_failure: false
+#     when: manual
+#     needs: [ 启动-crm ]
+
+# 完成-crm:
+#     stage: 完成
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "完成-crm"
+#     tags:
+#         - server4
+#         - server5
+#     allow_failure: false
+#     needs: [ 验证-crm ]
+
+# 回滚-crm:
+#     stage: 回滚
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "回滚-crm"
+#     tags:
+#         - server4
+#         - server5
+#     allow_failure: false
+#     when: on_failure
+#     needs: [ 验证-crm ]
+
+# 打包-bank-sichuannongxin:
+#     stage: 打包
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "打包-crm"
+#         - package 'modules/banks/sichuannongxin' 
+#         - echo $CI_COMMIT_REF_NAME
+#     tags:
+#         - server1
+#         - server2
+#         - server3
+#     allow_failure: false
+
+# 启动-bank-sichuannongxin:
+#     stage: 启动
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "启动-crm-master"
+#         - startup sichuannongxin
+#     tags:
+#         - server1
+#         - server2
+#         - server3
+#     when: manual
+#     allow_failure: false
+#     needs: [ 打包-bank-sichuannongxin ]
+
+# 验证-bank-sichuannongxin:
+#     stage: 线上验证
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "验证-bank-sichuannongxin" && ${STATUS:-false}
+#     tags:
+#         - server1
+#         - server2
+#         - server3
+#     allow_failure: false
+#     when: manual
+#     needs: [ 启动-bank-sichuannongxin ]
+
+# 完成-bank-sichuannongxin:
+#     stage: 完成
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "完成-bank-sichuannongxin"
+#     tags:
+#         - server1
+#         - server2
+#         - server3
+#     allow_failure: false
+#     needs: [ 验证-bank-sichuannongxin ]
+    
+# 回滚-bank-sichuannongxin:
+#     stage: 回滚
+#     only:
+#         - /^master$/
+#     script:
+#         - echo "回滚-crm"
+#     tags:
+#         - server1
+#         - server2
+#         - server3
+#     allow_failure: false
+#     when: on_failure
+#     needs: [ 验证-bank-sichuannongxin ]
+
+打包_business_test:
+    stage: 打包
+    only:
+        - /^test.*business$/
+    script:
+        - echo "打包_business_test"
+        - package 'modules/business' 
+        - echo $CI_COMMIT_REF_NAME
+    tags:
+        - crm-test
+    allow_failure: false
+    
+启动_business_test:
+    stage: 启动
+    only:
+        - /^test.*business$/
+    script:
+        - echo "启动_business_test"
+        - startup business
+    tags:
+        - crm-test
+    allow_failure: false
+    needs: [ 打包_business_test ]
+
+
+打包_business_dev:
+    stage: 打包
+    only:
+        - /^dev.*business$/
+    script:
+        - echo "打包_business_dev"
+        - package 'modules/business' 
+        - echo $CI_COMMIT_REF_NAME
+    tags:
+        - crm-dev
+    allow_failure: false
+启动_business_dev:
+    stage: 启动
+    only:
+        - /^dev.*business$/
+    script:
+        - echo "启动_business_dev"
+        - startup business
+    tags:
+        - crm-dev
+    allow_failure: false
+    needs: [ 打包_business_dev ]
+
+打包_crm_test:
+    stage: 打包
+    only:
+        - /^test.*crm$/
+    script:
+        - echo "打包_crm_test"
+        - package 'modules/crm' 
+        - echo $CI_COMMIT_REF_NAME
+    tags:
+        - crm-test
+    allow_failure: false
+
+启动_crm_test:
+    stage: 启动
+    only:
+        - /^test.*crm$/
+    script:
+        - echo "启动_crm_test"
+        - startup crm
+    tags:
+        - crm-test
+    allow_failure: false
+    needs: [ 打包_crm_test ]
+
+
+打包_crm_dev:
+    stage: 打包
+    only:
+        - /^dev.*crm$/
+    script:
+        - echo "打包_crm_dev"
+        - echo $CI_COMMIT_REF_NAME
+        - package 'modules/crm' 
+    tags:
+        - crm-dev
+    allow_failure: false
+
+启动_crm_dev:
+    stage: 启动
+    only:
+        - /^dev.*crm$/
+    script:
+        - echo "启动_crm_dev"
+        - startup crm
+    tags:
+        - crm-dev
+    allow_failure: false
+    needs: [ 打包_crm_dev ]
+
+
+
+consumer_test_打包:
+    stage: 打包
+    only:
+        - /^test.*consumer$/
+    script:
+        - echo $CI_COMMIT_REF_NAME
+        - echo "consumer_test_打包"
+        - package 'modules/consumer' 
+        # - package 'modules/er-code' 
+        # - package 'modules/save-data' 
+    tags:
+        - crm-test
+    allow_failure: false
+
+consumer_test_启动:
+    stage: 启动
+    only:
+        - /^test.*consumer$/
+    script:
+        - echo "consumer_test_启动"
+        - startup consumer
+    tags:
+        - crm-test
+    allow_failure: false
+    needs: [ consumer_test_打包 ]
+
+
+consumer_dev_打包:
+    stage: 打包
+    only:
+        - /^dev.*consumer$/
+    script:
+        - echo $CI_COMMIT_REF_NAME
+        - echo "consumer_dev_打包"
+        - package 'modules/consumer'
+    tags:
+        - crm-dev
+    allow_failure: false
+
+consumer_dev_启动:
+    stage: 启动
+    only:
+        - /^dev.*consumer$/
+    script:
+        - echo "consumer_dev_启动"
+        - startup consumer
+    tags:
+        - crm-dev
+    allow_failure: false
+    needs: [ consumer_dev_打包 ]
+
+
+
+
+er-code_dev_打包:
+    stage: 打包
+    only:
+        - /^dev.*consumer$/
+    script:
+        - echo $CI_COMMIT_REF_NAME
+        - echo "er-code_dev_打包"
+        - package 'modules/er-code' 
+    tags:
+        - crm-dev
+    allow_failure: false
+
+er-code_dev_启动:
+    stage: 启动
+    only:
+        - /^dev.*consumer$/
+    script:
+        - echo "er-code_dev_启动"
+        - startup er-code
+    tags:
+        - crm-dev
+    allow_failure: false
+    needs: [ er-code_dev_打包 ]
+
+er-code_test_打包:
+    stage: 打包
+    only:
+        - /^test.*consumer$/
+    script:
+        - echo $CI_COMMIT_REF_NAME
+        - echo "er-code_test_打包"
+        - package 'modules/er-code' 
+    tags:
+        - crm-test
+    allow_failure: false
+
+er-code_test_启动:
+    stage: 启动
+    only:
+        - /^test.*consumer$/
+    script:
+        - echo "er-code_test_启动"
+        - startup er-code
+    tags:
+        - crm-test
+    allow_failure: false
+    needs: [ er-code_test_打包 ]
+
+
+save-data_dev_打包:
+    stage: 打包
+    only:
+        - /^dev.*consumer$/
+    script:
+        - echo $CI_COMMIT_REF_NAME
+        - echo "save-data_dev_打包"
+        - package 'modules/save-data' 
+    tags:
+        - crm-dev
+    allow_failure: false
+
+save-data_dev_启动:
+    stage: 启动
+    only:
+        - /^dev.*consumer$/
+    script:
+        - echo "save-data_dev_启动"
+        - startup save-data
+    tags:
+        - crm-dev
+    allow_failure: false
+    needs: [ save-data_dev_打包 ]
+
+save-data_test_打包:
+    stage: 打包
+    only:
+        - /^test.*consumer$/
+    script:
+        - echo $CI_COMMIT_REF_NAME
+        - echo "save-data_test_打包"
+        - package 'modules/save-data' 
+    tags:
+        - crm-test
+    allow_failure: false
+
+save-data_test_启动:
+    stage: 启动
+    only:
+        - /^test.*consumer$/
+    script:
+        - echo "save-data_test_启动"
+        - startup save-data
+    tags:
+        - crm-test
+    allow_failure: false
+    needs: [ save-data_test_打包 ]
+

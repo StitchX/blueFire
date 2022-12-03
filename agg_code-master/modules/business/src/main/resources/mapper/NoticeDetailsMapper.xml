@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blue.business.mapper.NoticeDetailsMapper">
+
+    <resultMap id="noticeDetailsResultMap" type="com.blue.business.domain.NoticeDetailsInfo">
+        <id column="notice_details_id" property="noticeDetailsId"/>
+        <result column="notice_id" property="noticeId"/>
+        <result column="merchant_id" property="merchantId"/>
+        <result column="read_status" property="readStatus"/>
+        <result column="msg_send_time" property="msgSendTime"/>
+        <result column="msg_read_time" property="msgReadTime"/>
+        <result column="msg_delivery_time" property="msgDeliveryTime"/>
+        <result column="supervision_id" property="supervisionId"/>
+    </resultMap>
+
+
+
+</mapper>

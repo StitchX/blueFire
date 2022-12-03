@@ -1,0 +1,242 @@
+{
+	"pages": [
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "商户经营",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/control/control",
+			"style": {
+				"navigationBarTitleText": "监管信息",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/notice/notice",
+			"style": {
+				"navigationBarTitleText": "通知",
+				"enablePullDownRefresh": false,
+				"backgroundColor": "#FFFFFF",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "发现",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/privacy/privacy",
+			"style": {
+				"navigationBarTitleText": "隐私政策",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/home/tradeDetail/tradeDetail",
+			"style": {
+				"navigationBarTitleText": "交易明细",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus" : {
+					"bounce" : "none" 
+				}
+			}
+		},
+		{
+			"path": "pages/home/chart/chart",
+			"style": {
+				"navigationBarTitleText": "统计分析",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/control/origin/origin",
+			"style": {
+				"navigationBarTitleText": "溯源追踪",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/control/origin/history",
+			"style": {
+				"navigationBarTitleText": "历史列表",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/control/live/live",
+			"style": {
+				"navigationBarTitleText": "直播监控",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/control/prevention/prevention",
+			"style": {
+				"navigationBarTitleText": "疫情防控",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/notice/page",
+			"style": {
+				"navigationBarTitleText": "详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/user/userPage",
+			"style": {
+				"navigationBarTitleText": "详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/user/userInfo",
+			"style": {
+				"navigationBarTitleText": "基本信息",
+				"enablePullDownRefresh": false
+			}
+		},	
+		{
+			"path": "pages/home/downloadQRcode/downloadQRcode",
+			"style": {
+				"navigationBarTitleText": "店铺收款码",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/control/exposure/exposure",
+			"style": {
+				"navigationBarTitleText": "曝光台",
+				"enablePullDownRefresh": false,
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/control/complaint/complaint",
+			"style": {
+				"navigationBarTitleText": "我的投诉",
+				"enablePullDownRefresh": false
+			}
+		},{
+		    "path" : "pages/user/certificate",
+		    "style" :                                                                
+		    {
+		        "navigationBarTitleText": "从业人员",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/user/addHealth",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "从业人员",
+		        "enablePullDownRefresh": false
+		    }  
+		},
+		{
+		    "path" : "pages/user/result",
+		    "style" :                                                                                    
+		    { 
+				"navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }  
+		},{
+            "path" : "pages/user/platform/platform",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "关于平台",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+	    ,{
+            "path" : "pages/notice/infoPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/report/report",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "疫情申报",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/report/result/result",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "防疫快速通行证",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#fff"
+	},
+	"tabBar": {
+		"color": "#595959",
+		"selectedColor": "#1890FF",
+		"borderStyle": "white",
+		"blurEffect": "dark",
+		"list": [
+			{
+				"pagePath": "pages/home/home",
+				"selectedIconPath": "static/tabBarImages/首页-选中.png",
+				"iconPath": "static/tabBarImages/首页-未选中.png",
+				"text": "商户经营"
+			},
+			{
+				"pagePath": "pages/control/control",
+				"selectedIconPath": "static/tabBarImages/监管信息-选中.png",
+				"iconPath": "static/tabBarImages/监管信息-未选中.png",
+				"text": "监管信息"
+			},
+			{
+				"pagePath": "pages/notice/notice",
+				"selectedIconPath": "static/tabBarImages/通知-选中.png",
+				"iconPath": "static/tabBarImages/通知-未选中.png",
+				"text": "通知"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"selectedIconPath": "static/tabBarImages/发现-选中.png",
+				"iconPath": "static/tabBarImages/发现-未选中.png",
+				"text": "发现"
+			}
+		]
+	}
+}

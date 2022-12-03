@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blue.save.mapper.OrderListMapper">
+    <resultMap id="OrderListMap" type="com.fire.dto.entity.OrderList">
+        <id column="orderId" property="orderId" />
+        <result column="merchant_name" property="merchantName" />
+        <result column="price" property="price" />
+        <result column="status" property="status" />
+        <result column="merchant_id" property="merchantId" />
+        <result column="pos_id" property="posId" />
+        <result column="bank_name" property="bankName" />
+        <result column="bank_code" property="bankCode" />
+        <result column="branch_id" property="branchId" />
+        <result column="create_time" property="createTime" />
+        <result column="callback_time" property="callbackTime" />
+        <result column="open_id" property="openId" />
+        <result column="type" property="type" />
+        <result column="bank_order_id" property="bankOrderId" />
+        <result column="other_order_id" property="otherOrderId" />
+    </resultMap>
+
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into order_list(order_id,merchant_name,price,status,merchant_id,pos_id,
+                               bank_name,bank_code,branch_id,create_time,callback_time,
+                               open_id,type,bank_order_id,other_order_id,mcht_no,make_order_sn,bank_order_sn)
+        values (#{orderId}, #{merchantName}, #{price}, #{status}, #{merchantId}, #{posId},
+                #{bankName}, #{bankCode}, #{branchId}, #{createTime}, #{callbackTime},
+                #{openId}, #{type}, #{bankOrderId}, #{otherOrderId},#{mchtNo},#{makeOrderSn},#{bankOrderSn})
+
+    </insert>
+    <update id="update">
+        update order_list
+        <set>
+            <if test="merchantName != null">
+                merchant_name = #{merchantName},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="merchantId != null">
+                merchant_id = #{merchantId},
+            </if>
+            <if test="posId != null">
+                pos_id = #{posId},
+            </if>
+            <if test="bankName != null">
+                bank_name = #{bankName},
+            </if>
+            <if test="bankCode != null">
+                bank_code = #{bankCode},
+            </if>
+            <if test="branchId != null">
+                branch_id = #{branchId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="callbackTime != null">
+                callback_time = #{callbackTime},
+            </if>
+            <if test="openId != null">
+                open_id = #{openId},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="bankOrderId != null">
+                bank_order_id = #{bankOrderId},
+            </if>
+            <if test="otherOrderId != null">
+                bank_order_id = #{otherOrderId},
+            </if>
+            <if test="mchtNo != null">
+                mcht_no = #{mchtNo},
+            </if>
+            <if test="makeOrderSn != null">
+                make_order_sn = #{makeOrderSn},
+            </if>
+            <if test="bankOrderSn != null">
+                bank_order_sn = #{bankOrderSn},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+</mapper>

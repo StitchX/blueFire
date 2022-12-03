@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blue.business.mapper.NoticeMapper">
+
+    <resultMap id="noticeResultMap" type="com.blue.business.domain.NoticeInfo">
+        <id column="notice_id" property="noticeId"/>
+        <result column="notice_title" property="noticeTitle"/>
+        <result column="read_flag" property="readFlag"/>
+        <result column="read_percent" property="readPercent"/>
+        <result column="notice_type" property="noticeType"/>
+        <result column="issuing_agency" property="issuingAgency"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_author" property="createAuthor"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_author" property="updateAuthor"/>
+        <result column="status" property="status"/>
+        <result column="notice_condition" property="noticeCondition"/>
+        <result column="send_time" property="sendTime"/>
+        <result column="content" property="content"/>
+        <result column="adjunct_file" property="adjunctFile"/>
+        <result column="supervision_id" property="supervisionId"/>
+        <result column="supervision_name" property="supervisionName"/>
+    </resultMap>
+
+    <resultMap id="ResultMap" type="com.blue.business.vo.NoticeVo">
+        <result column="notice_id" property="noticeId"/>
+        <result column="notice_title" property="noticeTitle"/>
+        <result column="read_flag" property="readFlag"/>
+        <result column="notice_type" property="noticeType"/>
+        <result column="read_status" property="readStatus"/>
+        <result column="notice_details_id" property="noticeDetailsId"/>
+        <result column="msg_send_time" property="msgSendTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="issuing_agency" property="issuingAgency"/>
+        <result column="content" property="content"/>
+        <result column="adjunct_file" property="file"/>
+    </resultMap>
+
+    <select id="queryNoticePageInfo" resultMap="ResultMap">
+        SELECT
+        n.notice_id AS notice_id,
+        n.notice_title AS notice_title,
+        n.read_flag AS read_flag,
+        n.notice_type AS notice_type,
+        d.read_status AS read_status,
+        d.notice_details_id AS notice_details_id,
+        d.msg_send_time AS msg_send_time
+        FROM notice_info AS n
+        LEFT JOIN notice_details_info AS d ON n.notice_id = d.notice_id
+        <where>
+            <if test="merchantId !=null and merchantId > 0">
+                d.merchant_id = #{merchantId}
+            </if>
+            AND n.`status` = 1
+        </where>
+        ORDER BY d.msg_send_time DESC
+    </select>
+
+    <select id="queryNoticeDetails" resultMap="ResultMap">
+        SELECT
+        notice_id,
+        notice_title,
+        notice_type,
+        create_time,
+        issuing_agency,
+        content,
+        adjunct_file
+        FROM
+        notice_info
+        <where>
+            <if test="param.noticeId !=null ">
+                notice_id=#{param.noticeId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

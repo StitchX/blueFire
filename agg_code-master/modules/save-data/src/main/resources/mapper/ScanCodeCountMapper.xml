@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blue.save.mapper.ScanCodeCountMapper">
+    <resultMap id="ScanCodeMap" type="com.fire.dto.entity.ScanCodeCount">
+        <id column="id" property="id" />
+        <result column="merchant_id" property="merchantId" />
+        <result column="avatar" property="avatar" />
+        <result column="open_id" property="openId" />
+        <result column="nick_name" property="nickName" />
+        <result column="create_time" property="createTime" />
+        <result column="terminal" property="terminal" />
+    </resultMap>
+
+    <insert id="insert">
+        insert into scan_code_count(merchant_id, avatar, open_id, nick_name, create_time, terminal)
+        values (#{merchantId}, #{avatar}, #{openId}, #{nickName}, #{createTime}, #{terminal})
+    </insert>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fire.admin.mapper.SupervisionBureauMapper">
+
+    <resultMap type="com.fire.admin.entity.SupervisionBureau" id="SupervisionBureauDTOMap">
+        <id property="supervisionId" column="supervision_id"/>
+        <result property="supervisionName" column="supervision_name"/>
+        <result property="phone" column="phone"/>
+        <result property="addressId" column="address_id"/>
+        <result property="addressName" column="address_name"/>
+        <result property="addressDesc" column="address_desc"/>
+        <result property="createAuthor" column="create_author"/>
+        <result property="updateAuthor" column="update_author"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="parentSupervisionId" column="parent_supervision_id"/>
+    </resultMap>
+
+    <!-- 监管所 view object-->
+    <resultMap id="SupervisionBureauVOMap" type="com.fire.admin.vo.SupervisionBureauVo">
+        <result column="supervision_id" property="supervisionId"/>
+        <result column="supervision_name" property="supervisionName"/>
+        <result column="phone" property="phone"/>
+        <result column="address_id" property="addressId"/>
+        <result column="address_name" property="addressName"/>
+        <result column="address_desc" property="addressDesc"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_time" property="createTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+    </resultMap>
+
+    <select id="querySupervisionBureauByUserId" resultMap="SupervisionBureauVOMap">
+        SELECT
+        su.supervision_id,
+        su.supervision_name,
+        su.phone,
+        su.address_id,
+        su.is_delete,
+        u.create_time,
+        u.user_id,
+        u.username
+        FROM supervision_bureau AS su
+        LEFT JOIN sys_user AS u ON u.supervision_id = su.supervision_id
+        <where>
+            <if test="supervisionIds !=null and supervisionIds.size>0">
+                AND su.supervision_id IN
+                <foreach item="index" collection="supervisionIds" separator="," open="(" close=")" index="">
+                    #{index, jdbcType=INTEGER}
+                </foreach>
+            </if>
+            ORDER BY u.create_time DESC
+        </where>
+    </select>
+</mapper>
+

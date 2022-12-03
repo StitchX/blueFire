@@ -1,0 +1,61 @@
+.divFlex {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+}
+.divBorder {
+  background: #ffffff;
+  border-radius: 4px;
+  margin-right: 10px;
+  width:100%;
+}
+.top {
+  width: 25%;
+  padding: 5px;
+}
+.top:last-child {
+  margin-right: 0;
+}
+.middle {
+  height: 20rem;
+  width: 50%;
+  margin-top:10px;
+}
+.middle:last-child {
+  margin-right: 0;
+}
+.disFlex {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+}
+.pieTopFlex{
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  padding: 10px;
+  overflow: hidden;
+}
+.dataLinePosition{
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.chartText {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 4px;
+}
+.iconClass {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  top: 5px;
+}
+.block {
+  width: 21.5rem;
+  position: relative;
+  top: -3px;
+  line-height: 1.5rem;
+}

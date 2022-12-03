@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fire.api.mapper.ChongQingBankMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="baseMap" type="com.fire.dto.bank.ChongQingBank">
+        <id column="id" property="id"/>
+        <result column="mch_id" property="mchId"/>
+        <result column="chongqing_mch_id" property="chongQingMchId"/>
+        <result column="chongqing_secret" property="chongQingSecret"/>
+        <result column="creater" property="creator"/>
+        <result column="created_at" property="createTime"/>
+        <result column="updater" property="updator"/>
+        <result column="updated_at" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="resultMap" type="com.fire.api.vo.ChongQingBankVo">
+        <result column="chongqing_mch_id" property="businessId"/>
+        <result column="dianpu_name" property="businessName"/>
+        <result column="mch_id" property="codeId"/>
+        <result column="chongqing_secret" property="chongQingSecret"/>
+        <result column="created_at" property="createTime"/>
+        <result column="creater" property="creator"/>
+    </resultMap>
+
+    <sql id="common_field">
+        b
+        .
+        chongqing_mch_id
+        ,
+        s.dianpu_name,
+        b.mch_id,
+        b.chongqing_secret,
+        b.created_at,
+        b.creater,
+        b.updated_at,
+        b.updater
+    </sql>
+
+    <insert id="saveSecretKey" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO app_chongqing_bank
+        (mch_id,
+         chongqing_mch_id,
+         chongqing_secret,
+         created_at,
+         creater,
+         updated_at,
+         updater)
+        VALUES (#{mchId},
+                #{chongQingMchId},
+                #{chongQingSecret},
+                #{createTime},
+                #{creator},
+                #{updateTime},
+                #{updator})
+    </insert>
+
+    <select id="querySecretKeyList" resultMap="resultMap">
+        SELECT
+        <include refid="common_field"/>
+        FROM
+        app_chongqing_bank AS b
+        LEFT JOIN app_wisdom_shanghu AS s ON b.mch_id = s.id
+        ORDER BY b.created_at DESC
+    </select>
+
+    <select id="queryBusinessName" resultMap="resultMap">
+        SELECT dianpu_name
+        FROM
+        app_wisdom_shanghu
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <select id="getExistBusinessId" resultMap="resultMap">
+        SELECT
+        chongqing_mch_id
+        FROM app_chongqing_bank
+        <where>
+            <if test="chongQingMchId != null and chongQingMchId != ''">
+                chongqing_mch_id = #{businessId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getExistCodeId" resultMap="resultMap">
+        SELECT
+        mch_id
+        FROM app_chongqing_bank
+        <where>
+            <if test="mchId != null">
+                mch_id = #{codeId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

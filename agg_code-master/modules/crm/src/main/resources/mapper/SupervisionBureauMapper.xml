@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blue.crm.mapper.SupervisionBureauMapper">
+
+    <resultMap type="com.blue.crm.entity.SupervisionBureau" id="SupervisionBureauMap">
+        <id property="supervisionId" column="supervision_id"/>
+        <result property="supervisionName" column="supervision_name"/>
+        <result property="phone" column="phone"/>
+        <result property="addressId" column="address_id"/>
+        <result property="addressName" column="address_name"/>
+        <result property="addressDesc" column="address_desc"/>
+        <result property="createAuthor" column="create_author"/>
+        <result property="updateAuthor" column="update_author"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="parentSupervisionId" column="parent_supervision_id"/>
+    </resultMap>
+    <resultMap id="supervisionVoMap" type="com.blue.crm.vo.SupervisionBureauOptionsVo">
+        <id property="supervisionId" column="supervision_id"/>
+        <result property="supervisionName" column="supervision_name"/>
+    </resultMap>
+    <select id="selectByAddressId" resultMap="supervisionVoMap">
+        SELECT
+            supervision_id,
+            supervision_name
+        FROM supervision_bureau
+        where address_id = #{addressId}
+    </select>
+</mapper>
+

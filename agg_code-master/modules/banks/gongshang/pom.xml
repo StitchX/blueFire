@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>banks</artifactId>
+        <groupId>com.blue</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>gongshang</artifactId>
+    <dependencies>
+    <dependency>
+        <groupId>com.icbc.api-sdk-cop-io</groupId>
+        <artifactId>icbc-api-sdk-cop-io</artifactId>
+        <version>1.0</version>
+        <scope>system</scope>
+        <systemPath>${pom.basedir}/lib/icbc-api-sdk-cop-io-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+        <groupId>com.icbc.api-sdk-cop</groupId>
+        <artifactId>icbc-api-sdk-cop</artifactId>
+        <version>1.0</version>
+        <scope>system</scope>
+        <systemPath>${pom.basedir}/lib/icbc-api-sdk-cop-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+        <groupId>com.icbc.hsm-software-share</groupId>
+        <artifactId>hsm-software-share</artifactId>
+        <version>1.0</version>
+        <scope>system</scope>
+        <systemPath>${pom.basedir}/lib/hsm-software-share-1.0.3.jar</systemPath>
+    </dependency>
+
+    <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-starter</artifactId>
+    </dependency>
+    </dependencies>
+
+    <properties>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>15</source>
+                    <target>15</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

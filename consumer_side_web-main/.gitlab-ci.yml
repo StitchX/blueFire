@@ -1,0 +1,293 @@
+before_script:
+    - git log|head -n 11||true
+
+stages:
+  - 打包
+  - 发布
+  - 同步
+  - 回滚
+
+cache:
+  key: ${CI_COMMIT_REF_NAME}
+  paths:
+   - node_modules/
+   - dist/
+
+##################################################################################################
+打包:
+  stage: 打包
+  only:
+    - main
+  script:
+    - echo "开发打包"
+    - npm install
+    - npm run prod
+    - if test -d dist ; then echo '打包完成' ;else echo "打包失败" && false; fi
+  tags:
+    - ng6
+  allow_failure: false
+
+发布:
+  stage: 发布
+  only:
+    - main
+  script:
+    - echo "部署"
+    - if test -d /web/consumer_bak; then rm -rf /web/consumer_bak ;fi
+    - if test -d /web/consumer ;then mv /web/consumer{,_bak}; fi
+    - cp -fr dist /web/consumer
+  needs: [打包]
+  tags:
+    - ng6
+  allow_failure: false
+  when: manual
+
+S1同步:
+  stage: 同步
+  only:
+    - main
+  script:
+    - echo "同步"
+    - if test -d /web/consumer_bak; then rm -rf /web/consumer_bak ;fi
+    - if test -d /web/consumer ;then mv /web/consumer{,_bak}; fi
+    - scp -r -i /home/gitlab-runner/.ssh/web_copy root@172.30.0.10:/web/consumer /web/consumer
+  tags:
+    - ng1
+  when: manual
+  needs: [发布]
+
+S1回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/consumer
+    - mv /web/consumer{_bak,}
+  tags:
+    - ng1
+  when: manual
+  needs: [S1同步]
+
+S2同步:
+  stage: 同步
+  only:
+    - main
+  script:
+    - echo "同步"
+    - if test -d /web/consumer_bak; then rm -rf /web/consumer_bak ;fi
+    - if test -d /web/consumer ;then mv /web/consumer{,_bak}; fi
+    - scp -r -i /home/gitlab-runner/.ssh/web_copy root@172.30.0.10:/web/consumer /web/consumer
+  tags:
+    - ng2
+  when: manual
+  needs: [发布]
+
+S2回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/consumer
+    - mv /web/consumer{_bak,}
+  tags:
+    - ng2
+  when: manual
+  needs: [S2同步]
+
+S3同步:
+  stage: 同步
+  only:
+    - main
+  script:
+    - echo "同步"
+    - if test -d /web/consumer_bak; then rm -rf /web/consumer_bak ;fi
+    - if test -d /web/consumer ;then mv /web/consumer{,_bak}; fi
+    - scp -r -i /home/gitlab-runner/.ssh/web_copy root@172.30.0.10:/web/consumer /web/consumer
+  tags:
+    - ng3
+  when: manual
+  needs: [发布]
+
+S3回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/consumer
+    - mv /web/consumer{_bak,}
+  tags:
+    - ng3
+  when: manual
+  needs: [S3同步]
+
+
+S4同步:
+  stage: 同步
+  only:
+    - main
+  script:
+    - echo "同步"
+    - if test -d /web/consumer_bak; then rm -rf /web/consumer_bak ;fi
+    - if test -d /web/consumer ;then mv /web/consumer{,_bak}; fi
+    - scp -r -i /home/gitlab-runner/.ssh/web_copy root@172.30.0.10:/web/consumer /web/consumer
+  tags:
+    - ng4
+  when: manual
+  needs: [发布]
+
+S4回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/consumer
+    - mv /web/consumer{_bak,}
+  tags:
+    - ng4
+  when: manual
+  needs: [S4同步]
+
+S5同步:
+  stage: 同步
+  only:
+    - main
+  script:
+    - echo "同步"
+    - if test -d /web/consumer_bak; then rm -rf /web/consumer_bak ;fi
+    - if test -d /web/consumer ;then mv /web/consumer{,_bak}; fi
+    - scp -r -i /home/gitlab-runner/.ssh/web_copy root@172.30.0.10:/web/consumer /web/consumer
+  tags:
+    - ng5
+  when: manual
+  needs: [发布]
+
+S5回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/consumer
+    - mv /web/consumer{_bak,}
+  tags:
+    - ng5
+  when: manual
+  needs: [S5同步]
+
+S6同步:
+  stage: 同步
+  only:
+    - main
+  script:
+    - echo "同步"
+    # - if test -d /web/consumer_bak; then rm -rf /web/consumer_bak ;fi
+    # - if test -d /web/consumer ;then mv /web/consumer{,_bak}; fi
+    # - scp -r -i /home/gitlab-runner/.ssh/web_copy root@172.30.0.10:/web/consumer /web/consumer
+  tags:
+    - ng6
+  when: manual
+  needs: [发布]
+
+S6回滚:
+  stage: 回滚
+  only:
+    - main
+  script:
+    - echo "回滚"
+    - rm -rf /web/consumer
+    - mv /web/consumer{_bak,}
+  tags:
+    - ng6
+  when: manual
+  needs: [S6同步]
+
+
+
+#################################开发环境部署####################################
+开发打包:
+  stage: 打包
+  only:
+    - /^dev.*$/
+  script:
+    - echo "开发打包"
+    - npm install
+    - npm run dev
+    - if test -d dist ; then echo '打包完成' ;else echo "打包失败" && false; fi
+  tags:
+    - dev
+  allow_failure: false
+
+开发发布:
+  stage: 发布
+  only:
+    - /^dev.*$/
+  script:
+    - echo "部署"
+    - if test -d /web/consumer_bak; then rm -rf /web/consumer_bak ;fi
+    - if test -d /web/consumer ;then mv /web/consumer{,_bak}; fi
+    - cp -fr dist /web/consumer
+  needs: [开发打包]
+  tags:
+    - dev
+  allow_failure: false
+
+开发回滚:
+  stage: 回滚
+  only:
+    - /^dev.*$/
+  script:
+    - echo "回滚"
+    - rm -rf /web/consumer
+    - mv /web/consumer{_bak,}
+  tags:
+    - dev
+  needs: [开发发布]
+  when: manual
+
+
+
+
+测试打包:
+  stage: 打包
+  only:
+    - /^test.*$/
+  script:
+    - echo "开发打包"
+    - npm install
+    - npm run test
+    - if test -d dist ; then echo '打包完成' ;else echo "打包失败" && false; fi
+  tags:
+    - test
+  allow_failure: false
+
+测试发布:
+  stage: 发布
+  only:
+    - /^test.*$/
+  script:
+    - echo "部署"
+    - if test -d /web/consumer_bak; then rm -rf /web/consumer_bak ;fi
+    - if test -d /web/consumer ;then mv /web/consumer{,_bak}; fi
+    - cp -fr dist /web/consumer
+  needs: [测试打包]
+  tags:
+    - test
+  allow_failure: false
+
+测试回滚:
+  stage: 回滚
+  only:
+    - /^test.*$/
+  script:
+    - echo "回滚"
+    - rm -rf /web/consumer
+    - mv /web/consumer{_bak,}
+  tags:
+    - test
+  needs: [测试发布]
+  when: manual
+

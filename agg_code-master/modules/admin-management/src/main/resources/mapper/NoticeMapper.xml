@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fire.admin.mapper.NoticeMapper">
+
+    <resultMap id="noticeResultMap" type="com.fire.admin.entity.NoticeInfo">
+        <id column="notice_id" property="noticeId"/>
+        <result column="notice_title" property="noticeTitle"/>
+        <result column="read_flag" property="readFlag"/>
+        <result column="read_percent" property="readPercent"/>
+        <result column="notice_type" property="noticeType"/>
+        <result column="issuing_agency" property="issuingAgency"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_author" property="createAuthor"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_author" property="updateAuthor"/>
+        <result column="status" property="status"/>
+        <result column="notice_condition" property="noticeCondition"/>
+        <result column="send_time" property="sendTime"/>
+        <result column="content" property="content"/>
+        <result column="adjunct_file" property="adjunctFile"/>
+        <result column="supervision_id" property="supervisionId"/>
+        <result column="supervision_name" property="supervisionName"/>
+    </resultMap>
+
+    <resultMap id="noticeListMap" type="com.fire.admin.vo.NoticeVo">
+        <result column="notice_id" property="noticeId"/>
+        <result column="notice_title" property="noticeTitle"/>
+        <result column="read_flag" property="readFlag"/>
+        <result column="read_percent" property="readPercent"/>
+        <result column="notice_type" property="noticeType"/>
+        <result column="issuing_agency" property="issuingAgency"/>
+        <result column="create_time" property="createTime"/>
+        <result column="status" property="status"/>
+        <result column="send_time" property="sendTime"/>
+    </resultMap>
+
+
+    <sql id="common_field">
+        notice_id
+        ,
+        notice_title,
+        read_flag,
+        read_percent,
+        notice_type,
+        issuing_agency,
+        create_time,
+        send_time,
+        status
+    </sql>
+
+    <select id="queryNoticeList" resultMap="noticeListMap">
+        SELECT
+        <include refid="common_field"/>
+        FROM notice_info
+        <where>
+            <if test="param.noticeType != null">
+                notice_type = #{param.noticeType}
+            </if>
+            <if test="param.startTime != null and param.startTime.trim() != '' ">
+                AND create_time &gt;= #{param.startTime}
+            </if>
+            <if test="param.endTime != null and param.endTime.trim() != ''">
+                AND create_time &lt;= #{param.endTime}
+            </if>
+            <if test="param.supervisionIds != null and param.supervisionIds.size() > 0">
+                AND supervision_id IN (
+                <foreach collection="param.supervisionIds" item="supervisionId" separator=",">
+                    #{supervisionId}
+                </foreach>
+                )
+            </if>
+            AND is_delete = 0
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据通知编号获取通知详情 -->
+    <select id="queryDetailsById" resultMap="noticeResultMap">
+        SELECT
+        notice_id,
+        notice_title,
+        read_flag,
+        read_percent,
+        notice_type,
+        issuing_agency,
+        status,
+        notice_condition,
+        content,
+        adjunct_file,
+        supervision_id,
+        send_time
+        FROM notice_info
+        <where>
+            <if test="noticeId != null and noticeId !=null">
+                notice_id = #{notice_id}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

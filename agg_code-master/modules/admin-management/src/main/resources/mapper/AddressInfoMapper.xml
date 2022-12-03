@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fire.admin.mapper.AddressInfoMapper">
+
+    <resultMap type="com.fire.admin.entity.AddressInfo" id="AddressInfoMap">
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="parentCode" column="parent_code" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="city" column="city" jdbcType="VARCHAR"/>
+        <result property="area" column="area" jdbcType="VARCHAR"/>
+        <result property="town" column="town" jdbcType="VARCHAR"/>
+        <result property="level" column="level" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap type="com.fire.admin.vo.QueryAreaVo" id="QueryAreaVoMap">
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--根据父级code查询下一级行政区域-->
+    <select id="queryByParentCode" resultMap="QueryAreaVoMap">
+       SELECT code,name
+       FROM address_info
+       <where>
+           <if test="parentCode != null and parentCode != ''">
+               parent_code = #{parentCode}
+           </if>
+       </where>
+    </select>
+
+
+</mapper>
+

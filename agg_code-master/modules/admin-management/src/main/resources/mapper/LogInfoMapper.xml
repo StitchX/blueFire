@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fire.admin.mapper.LogInfoMapper">
+
+    <resultMap id="logInfoResultMap" type="com.fire.dto.log.LogInfo">
+        <id column="log_info_id" property="logInfoId"/>
+        <result column="name" property="name"/>
+        <result column="content" property="content"/>
+        <result column="ip" property="ip"/>
+        <result column="operate_time" property="operateTime"/>
+        <result column="module" property="module"/>
+    </resultMap>
+
+    <sql id="common_field">
+        log_info_id,
+        `name`,
+        content,
+        ip,
+        operate_time,
+        `module`
+    </sql>
+
+    <select id="getLogInfoList" resultMap="logInfoResultMap">
+        SELECT
+        <include refid="common_field"/>
+        FROM log_info
+        <where>
+            <if test="param.startTime != null and param.startTime.trim() != ''">
+                operate_time &gt;= #{param.startTime}
+            </if>
+            <if test="param.endTime != null and param.endTime.trim() != ''">
+                AND operate_time &lt;= #{param.endTime}
+            </if>
+            <if test="param.name != null and param.name.trim() != ''">
+                AND `name` LIKE CONCAT('%' #{param.name},'%')
+            </if>
+            <!--<if test="param.supervisionIds != null and param.supervisionIds.size() > 0">
+                AND supervision_id IN (
+                <foreach collection="param.supervisionIds" item="supervisionId" separator=",">
+                    #{supervisionId}
+                </foreach>
+                )
+            </if>-->
+        </where>
+        ORDER BY operate_time DESC
+    </select>
+
+</mapper>

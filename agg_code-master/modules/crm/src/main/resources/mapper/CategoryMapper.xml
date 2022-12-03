@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blue.crm.mapper.CategoryMapper">
+    <resultMap id="CategoryVoMap" type="com.blue.crm.vo.CategoryVo">
+        <id column="category_id" property="categoryId" />
+        <id column="category_name" property="categoryName" />
+    </resultMap>
+
+    <select id="selectByParentIdAndName" resultMap="CategoryVoMap">
+        SELECT
+               category_id,category_name
+        FROM category
+        where
+          <choose>
+              <when test="pCategoryId == 0 and categoryName == '食品'">
+                  parent_category_id = 1
+              </when>
+              <when test="pCategoryId == 0 and categoryName == '非餐饮'">
+                  parent_category_id = 0 and category_id != 1
+              </when>
+              <when test="pCategoryId == 0">
+                  (parent_category_id = 0 or parent_category_id = 1) and category_id != 1
+              </when>
+              <otherwise>
+                  parent_category_id = #{pCategoryId}
+              </otherwise>
+          </choose>
+    </select>
+</mapper>

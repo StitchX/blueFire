@@ -1,0 +1,160 @@
+.pay {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+  }
+  .payBtn {
+    width: 80vw;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    background: #345ae3;
+    border: 1px solid #345ae3;
+  }
+  .box {
+    position: relative;
+    z-index: 200;
+    height: 400px;
+  }
+  .input {
+    position: absolute;
+    z-index: 200;
+    height: 140px;
+    line-height: 140px;
+    font-size: 42px;
+    font-weight: bold;
+  background: linear-gradient(186deg, #aeecba 1%, rgba(255, 255, 255, 0.13) 100%);
+  }
+  .inputRed {
+    background: linear-gradient(
+      186deg,
+      rgba(228, 83, 76, 0.6) 10%,
+      rgba(255, 255, 255, 0.13) 100%
+    );
+  }
+  .inputYellow {
+    background: linear-gradient(
+      186deg,
+      #ece29d 1%,
+      rgba(255, 255, 255, 0.013) 100%
+    );
+  }
+  .codeImg {
+    width: 90px;
+    height: 75px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 201;
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  .codeImgRed {
+    background-repeat: no-repeat;
+  }
+  .codeImgYellow {
+    background-repeat: no-repeat;
+  }
+  /deep/ .van-field__label {
+    width: 30px;
+  }
+  /* 付款金额 */
+  .fukuan {
+    position: absolute;
+    color: #292929;
+    font-weight: bold;
+    z-index: 202;
+    padding: 15px 20px;
+    font-size: 14px;
+  }
+  /* 食品安全险 */
+  .foodHealth{
+   position: absolute;
+    z-index: 202;
+    left:85px;
+   top:17px;
+    color: #01951E;
+    font-size: 12px;
+  background: linear-gradient(270deg, rgba(88, 190, 108, 0.12) 0%, rgba(88, 190, 108, 0.35) 100%);
+  }
+  .keyBox {
+    position: absolute;
+    bottom:18px;
+  }
+  .footIcon {
+    position: absolute;
+    z-index: 200;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    background: rgb(242,243,245);
+  }
+  .bankIcon {
+    width:150px;
+    padding:10px 10px;
+  }
+  .bankInfo {
+    font-size: 13px;
+    color: #595959;
+  }
+  /* 数字键盘 */
+  /deep/ .van-number-keyboard__title {
+    display: inline-block;
+    font-weight: 400;
+    position: absolute;
+    left: 20px;
+    color: #292929;
+    font-size: 42px;
+    height: 58px;
+    line-height: 58px;
+  }
+  /* 支付按钮 背景颜色 */
+  /deep/ .van-key--blue {
+    background-color: #58be6c;
+  }
+  /*  激活支付按钮 背景颜色 */
+  /deep/ .van-key--blue.van-key--active {
+    background-color: #82c28f;
+  }
+  /* 支付按钮 */
+  /deep/ .van-key--large {
+  position: absolute;
+  
+  }
+  /* 删除按钮 */
+  /deep/ .van-key--delete {
+      font-size: 6.26667vw;
+      /* height: 48px; */
+  }
+  /deep/ [data-v-29e51ead] .van-key--large {
+      height: 156px;
+      position: absolute;
+  }
+  /deep/ .van-number-keyboard__sidebar .van-key__wrapper{
+      position: relative;
+      -webkit-box-flex: 0;
+      -webkit-flex: 0;
+      -ms-flex: 0;
+      flex: 0 ;
+      -webkit-flex-basis: 33%;
+      -ms-flex-preferred-size: 33%;
+      flex-basis: 25%;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      padding: 0 1.8vw 1.8vw 0;
+  }
+  /deep/ [data-v-29e51ead] .van-key--delete {
+      font-size: 2.26667vw;
+      height: 47px;
+  }
+  
+  /deep/ .van-overlay {
+      background-color: rgba(0, 0, 0, 0);
+  }
+  /deep/ .van-key {
+      border-radius: 2.5px;
+  }

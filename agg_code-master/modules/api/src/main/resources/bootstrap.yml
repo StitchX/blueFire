@@ -1,0 +1,81 @@
+server:
+  port: 8102
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  application:
+    name: api
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  cloud:
+    nacos:
+      config:
+        server-addr: 1.13.159.173:8848
+        file-extension: yaml
+        namespace: agg_code
+        shared-configs:
+          - dataId: application.yaml
+            refresh: true
+      discovery:
+        server-addr: 1.13.159.173:8848
+        namespace: agg_code
+        service: ${spring.application.name}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  application:
+    name: api
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        namespace: agg_code
+        shared-configs:
+          - dataId: application.yaml
+            refresh: true
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: agg_code
+        service: ${spring.application.name}
+
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: pro
+  application:
+    name: api
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  cloud:
+    nacos:
+      config:
+        server-addr: 47.108.26.106:18848
+        file-extension: yaml
+        namespace: agg_code
+        username: nacos
+        password: 4^3&Irs9KhpLcfV
+        shared-configs:
+          - dataId: application.yaml
+            refresh: true
+      discovery:
+        server-addr: 47.108.26.106:18848
+        namespace: agg_code
+        service: ${spring.application.name}

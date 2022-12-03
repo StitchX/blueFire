@@ -1,0 +1,144 @@
+.home{
+    height: 100vh;
+    background: #F5F6F7;
+  }
+  .bg_position{
+    position: relative;
+    top: -50px;
+  }
+  .name_bg{
+     background: linear-gradient(#d8e4f0, rgb(252, 252, 252));
+     min-height: 100px;
+     border-radius:20px;
+     box-shadow: 0px -5px 20px 0px rgba(0, 0, 0, 0.103);
+     padding: 15px;
+  }
+  .store_name{
+    color:#292929;
+    font-size: 16px;
+    font-weight: 900;
+    width: 250px;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: relative;
+    top: 2px;
+  }
+  .image{
+    width: 20px;
+    height: 17px;
+  }
+  .green{
+    color:#01951E;
+    padding: 1.5px;
+    width: 60%;
+    background: linear-gradient(to right, #58be6c75, #58be6c1c,#58be6c1c);
+    font-size: 15px;
+  }
+  .yellow{
+    color:#FF7800;
+    padding: 1.5px;
+    width: 60%;
+    background: linear-gradient(to right, #ff770059, #f8953f31,#f8953f09);
+    font-size: 15px;
+  }
+  .hidden{
+    margin-top: 17px;
+    font-size: 12px;
+  }
+  .na_padding{
+    padding: 10px;
+    display: flex;
+    height: 150px;
+  }
+  /* 更加了解商户 */
+  .padding_left{
+    width: 45%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .padding_right{
+    width: 55%;
+    height: 100%;
+    display: flex;
+    flex-direction:column
+  }
+  .padding_flex{
+    height: 43%;
+  }
+  .padding_flex1{
+    height: 57%;
+  }
+  .flex_row{
+    display: flex;
+  }
+  .blox_flex{
+    width: 100%;
+  }
+  .detil{
+    color:#345AE3;
+    float:right;
+    font-size:13px
+  }
+
+  .merchat{
+    margin-top: 25px;
+    margin-left: 20px;
+    color:#12b48cea;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .merchat_text{
+    margin-left: 20px;
+    margin-top: 5px;
+    color: #99A2A4;
+    font-size: 12px;
+  }
+  .bg1{
+    margin-left: 20px;
+    width: 30px;
+    height: 31px;
+  }
+  .merchat_info{
+    color: #129471;
+    font-size: 12px;
+    width: 83%;
+    border-bottom-right-radius: 10px;
+    height: 38px;
+    margin-left: 20px;
+    font-weight: 900;
+    background: #ffffff57;
+  }
+  .merchat_center{
+    height: 38px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .complaintStyle{
+    color: #5886F2;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-left: 20px;
+    font-weight: 900;
+  }
+  .iconInfoImg{
+    width: 51px;
+    height: 33px;
+    margin-left: 16px;
+    margin-top: 16px;
+  }
+  .info_text{
+    color: #67AD59;
+    font-weight: 900;
+    font-size: 13px;
+    margin-left: 16px;
+  }
+  .kitchen_text{
+    color: #EA8A39;
+    font-weight: 900;
+    font-size: 13px;
+    margin-left: 16px;
+  }

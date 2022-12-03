@@ -1,0 +1,72 @@
+server:
+  port: 10001
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  application:
+    name: admin-management
+  config:
+    activate:
+      on-profile: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 139.186.180.210:8848
+        file-extension: yaml
+        namespace: fire
+        #这里只加共享的yaml，不加自身模块的yaml
+        shared-configs:
+          - dataId: application.yaml
+            refresh: true
+      discovery:
+        server-addr: 139.186.180.210:8848
+        namespace: fire
+        service: ${spring.application.name}
+---
+spring:
+  application:
+    name: admin-management
+  config:
+    activate:
+      on-profile: test
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        namespace: fire
+        #这里只加共享的yaml，不加自身模块的yaml
+        shared-configs:
+          - dataId: application.yaml
+            refresh: true
+        refresh-enabled: true
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: fire
+        service: ${spring.application.name}
+---
+spring:
+  application:
+    name: admin-management
+  config:
+    activate:
+      on-profile: pro
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        namespace: fire
+        #这里只加共享的yaml，不加自身模块的yaml
+        shared-configs:
+          - dataId: application.yaml
+            refresh: true
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: fire
+        service: ${spring.application.name}
+        
+        
+        

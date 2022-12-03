@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blue.save.mapper.WxUserInfoMapper">
+    <resultMap id="WxUserInfoMap" type="com.fire.dto.entity.WxUserInfo">
+        <id column="wx_user_id" property="wxUserId" />
+        <result column="merchant_id" property="merchantId" />
+        <result column="nick_name" property="nickName" />
+        <result column="open_id" property="openId" />
+        <result column="app_id" property="appId" />
+        <result column="country" property="country" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="gender" property="gender" />
+        <result column="head_img_url" property="headImgUrl" />
+        <result column="incoming_date" property="incomingDate" />
+        <result column="is_subscribe" property="isSubscribe" />
+    </resultMap>
+
+    <insert id="insert">
+        insert into wx_user_info
+        (wx_user_id, merchant_id, nick_name, open_id, app_id, country,
+         province, city, gender, head_img_url, incoming_date, is_subscribe)
+        values
+        (#{wxUserId}, #{merchantId}, #{nickName}, #{openId}, #{appId}, #{country},
+         #{province}, #{city}, #{gender}, #{headImgUrl}, #{incomingDate}, #{isSubscribe})
+    </insert>
+</mapper>

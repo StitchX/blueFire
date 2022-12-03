@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fire.admin.mapper.SysUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.fire.dto.system.SysUser">
+        <id column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="supervision_id" property="supervisionId"/>
+        <result column="supervisionName" property="supervisionName"/>
+        <result column="job_id" property="jobId"/>
+        <result column="phone" property="phone"/>
+        <result column="avatar" property="avatar"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="lock_flag" property="lockFlag"/>
+        <result column="del_flag" property="delFlag"/>
+        <collection property="roleList" ofType="com.fire.dto.system.SysRole"
+                    select="com.fire.admin.mapper.SysRoleMapper.listRolesByUserId"
+                    column="user_id">
+        </collection>
+    </resultMap>
+
+    <select id="getUserVosPage" resultMap="BaseResultMap">
+        SELECT
+        `user`.user_id,
+        `user`.username,
+        `user`.phone,
+        `user`.email,
+        `user`.avatar,
+        `user`.supervision_id AS supervisionId,
+        `user`.create_time,
+        `user`.update_time,
+        `user`.del_flag,
+        `user`.lock_flag,
+        sb.supervision_name AS supervisionName
+        FROM
+        sys_user AS `user`
+        LEFT JOIN supervision_bureau AS sb ON sb.supervision_id = `user`.supervision_id
+        <where>
+            <if test="query.username != null and query.username != ''">
+                and `user`.username LIKE CONCAT('%',#{query.username},'%')
+            </if>
+            <if test="query.supervisionId != null and query.supervisionId != ''">
+                and `user`.supervision_id in
+                <foreach item="item" collection="query.supervisionIdList" separator="," open="(" close=")" index="">
+                    #{item, jdbcType=INTEGER}
+                </foreach>
+            </if>
+            and `user`.del_flag = '0'
+        </where>
+        ORDER BY `user`.create_time DESC
+    </select>
+
+
+</mapper>

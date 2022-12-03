@@ -1,0 +1,30 @@
+/* 页面背景色  */
+.page {
+    font-size: 14px;
+    background-image: linear-gradient(#f8f8f8, #ffff);
+  }
+/* 空状态 */
+.empty{
+    text-align: center;
+    padding:160px 50px;
+    color: #8C8C8C;
+}
+/* 顶部 title     顶部返回键 */
+ .van-nav-bar__title,.van-icon-arrow-left:before{
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    color: #111111 !important;
+  }
+  /* field  样式修改 */
+ .van-cell {
+    padding: 10px 0 5px 10px !important;
+  }
+  .van-cell::after {
+    border-bottom: none !important;
+  }
+  .goPay{
+      position: fixed;
+      bottom:10px;
+      right: 0;
+      left: 0;
+  }

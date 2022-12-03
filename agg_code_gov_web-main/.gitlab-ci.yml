@@ -1,0 +1,174 @@
+variables:
+  #项目名称即git名称  
+  projectName: $CI_PROJECT_NAME
+  #git idea 拉代码的git地址
+  gitUrl: $CI_REPOSITORY_URL
+  projectDir: $CI_PROJECT_DIR
+  #部署目录
+  developDir: /data/operation_web
+
+stages:
+  - 打包
+  - 发布
+  - 回滚
+
+cache:
+  key: ${CI_COMMIT_REF_NAME}
+  paths:
+   - node_modules/
+
+#################################开发环境部署####################################
+开发打包:
+  stage: 打包
+  only:
+    - /^dev.*$/
+  script:
+    - echo "开发打包"
+    #- sh package $projectDir $gitUrl $projectName 
+    - git pull origin $CI_COMMIT_REF_NAME:$CI_COMMIT_REF_NAME;
+    - git checkout $CI_COMMIT_REF_NAME;
+    - npm install
+    - if [[ ${CI_COMMIT_REF_NAME} =~ 'shangtou' ]]; then npm run build:shangtou; else npm run build:prod; fi;
+    - if [ ! -d dist ] ;then echo "打包失败："$projectDir/dist; exit 1; else echo "打包完成："$projectDir/dist; fi;
+    - if [ ! -d ../artifacts/dist ] ;then mkdir -p ../artifacts/dist;else echo "目录存在"../artifacts/dist; fi;
+    - rm -rf ../artifacts/dist
+    - \cp -fr dist ../artifacts/dist
+  tags:
+    - dev_deploy
+  allow_failure: false
+
+1.开发发布:
+  stage: 发布
+  only:
+    - /^dev.*$/
+  script:
+    - echo "部署"
+    #- sh deploy $projectDir $projectName
+    - cd $developDir
+    - tar -czvf dist.backup.tar.gz dist
+    - cd $projectDir
+    - \cp -fr ../artifacts/dist $developDir
+  needs: [开发打包]
+  tags:
+    - dev_deploy
+  allow_failure: false
+
+开发回滚:
+  stage: 回滚
+  only:
+    - /^dev.*$/
+  script:
+    - echo "回滚"
+    #- sh rollback
+    - rm -rf $developDir/dist
+    - cd $developDir
+    - tar xf dist.backup.tar.gz -C $developDir/
+  tags:
+    - dev_deploy
+  needs: [1.开发发布]
+  when: manual
+#################################测试环境部署####################################
+测试打包:
+  stage: 打包
+  only:
+    - /^test.*$/
+  script:
+    - echo "测试打包"
+    #- sh package $projectDir $gitUrl $projectName 
+    - git pull origin $CI_COMMIT_REF_NAME:$CI_COMMIT_REF_NAME;
+    - git checkout $CI_COMMIT_REF_NAME;
+    - npm install
+    - if [[ ${CI_COMMIT_REF_NAME} =~ 'shangtou' ]]; then npm run build:shangtou; else npm run build:prod; fi;
+    - if [ ! -d dist ] ;then echo "打包失败："$projectDir/dist; exit 1; else echo "打包完成："$projectDir/dist; fi;
+    - if [ ! -d ../artifacts/dist ] ;then mkdir -p ../artifacts/dist;else echo "目录存在"../artifacts/dist; fi;
+    - rm -rf ../artifacts/dist
+    - \cp -fr dist ../artifacts/dist
+  tags:
+    - test_deploy
+  allow_failure: false
+
+1.测试发布:
+  stage: 发布
+  only:
+    - /^test.*$/
+  script:
+    - echo "部署"
+    #- sh deploy $projectDir $projectName
+    - cd $developDir
+    - tar -czvf dist.backup.tar.gz dist
+    - cd $projectDir
+    - \cp -fr ../artifacts/dist $developDir
+  needs: [测试打包]
+  tags:
+    - test_deploy
+  allow_failure: false
+
+测试回滚:
+  stage: 回滚
+  only:
+    - /^test.*$/
+  script:
+    - echo "回滚"
+    #- sh rollback
+    - rm -rf $developDir/dist
+    - cd $developDir
+    - tar xf dist.backup.tar.gz -C $developDir/
+  tags:
+    - test_deploy
+  needs: [1.测试发布]
+  when: manual
+
+   #################服务器5环境部署####################
+服务器5打包:
+  stage: 打包
+  only:
+    - master
+  script:
+    - echo "生产打包分支"${CI_COMMIT_REF_NAME}
+    #- sh package $projectDir $gitUrl $projectName
+    - git pull origin $CI_COMMIT_REF_NAME:$CI_COMMIT_REF_NAME;
+    - git checkout $CI_COMMIT_REF_NAME;
+    - npm install
+    - if [[ ${CI_COMMIT_REF_NAME} =~ 'shangtou' ]]; then npm run build:shangtou; else npm run build:prod; fi;
+    - if [ ! -d dist ] ;then echo "打包失败："$projectDir/dist; exit 1; else echo "打包完成："$projectDir/dist; fi;
+    - if [ ! -d ../artifacts/dist ] ;then mkdir -p ../artifacts/dist;else echo "目录存在"../artifacts/dist; fi;
+    - rm -rf ../artifacts/dist
+    - \cp -fr dist ../artifacts/dist
+  tags:
+    - server5
+  allow_failure: false
+  when: manual
+  retry: 2
+
+
+1.服务器5发布:
+  stage: 发布
+  only:
+    - master
+  script:
+    - echo "部署"
+    #- sh deploy $projectDir $projectName
+    - cd $developDir
+    - tar -czvf dist.backup.tar.gz dist
+    - cd $projectDir
+    - \cp -fr ../artifacts/dist $developDir
+  needs: [服务器5打包]
+  tags:
+    - server5
+  allow_failure: false
+  when: manual
+
+服务器5回滚:
+  stage: 回滚
+  only:
+    - master
+  script:
+    - echo "回滚"
+    #- sh rollback
+    - rm -rf $developDir/dist
+    - cd $developDir
+    - tar xf dist.backup.tar.gz -C $developDir/
+  tags:
+    - serve5
+  needs: [1.服务器5发布]
+  when: manual

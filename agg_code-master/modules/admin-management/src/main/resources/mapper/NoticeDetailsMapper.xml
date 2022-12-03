@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fire.admin.mapper.NoticeDetailsMapper">
+
+    <resultMap id="noticeDetailsResultMap" type="com.fire.admin.entity.NoticeDetailsInfo">
+        <id column="notice_details_id" property="noticeDetailsId"/>
+        <result column="notice_id" property="noticeId"/>
+        <result column="merchant_id" property="merchantId"/>
+        <result column="read_status" property="readStatus"/>
+        <result column="msg_send_time" property="msgSendTime"/>
+        <result column="msg_read_time" property="msgReadTime"/>
+        <result column="msg_delivery_time" property="msgDeliveryTime"/>
+        <result column="supervision_id" property="supervisionId"/>
+    </resultMap>
+
+    <resultMap id="noticeDetailsListMap" type="com.fire.admin.vo.NoticeDetailsVo">
+        <result column="store_name" property="storeName"/>
+        <result column="represent_name" property="representName"/>
+        <result column="read_status" property="readStatus"/>
+        <result column="msg_send_time" property="sendTime"/>
+    </resultMap>
+
+
+    <select id="noticeDetailsList" resultMap="noticeDetailsListMap">
+        SELECT
+        b.store_name,
+        n.notice_id,
+        n.notice_details_id,
+        b.represent_name,
+        n.read_status,
+        n.msg_send_time
+        FROM notice_details_info AS n LEFT JOIN business_license AS b ON n.merchant_id = b.merchant_id
+        <where>
+            <if test="param.noticeId !=null">
+                AND n.notice_id = #{param.noticeId}
+            </if>
+            <if test="param.storeName != null and param.storeName != ''">
+                AND b.store_name LIKE CONCAT('%', #{param.storeName},'%')
+            </if>
+            <if test="param.representName != null and param.representName != ''">
+                AND b.represent_name LIKE CONCAT('%', #{param.representName},'%')
+            </if>
+            <if test="param.readStatus != null">
+                AND n.read_status = #{param.readStatus}
+            </if>
+            <if test="param.supervisionIds != null and param.supervisionIds.size() > 0">
+                AND n.supervision_id IN (
+                <foreach collection="param.supervisionIds" item="supervisionId" separator=",">
+                    #{supervisionId}
+                </foreach>
+                )
+            </if>
+            AND n.merchant_id is not null
+        </where>
+        ORDER BY n.msg_send_time DESC
+    </select>
+
+    <resultMap id="PercentMap" type="com.fire.admin.vo.NoticeDetailsPercentVo">
+        <result column="num" property="num"/>
+        <result column="notice_id" property="noticeId"/>
+        <result column="read_status" property="readStatus"/>
+    </resultMap>
+
+    <select id="queryNoticeDetailPercent" resultMap="PercentMap">
+        SELECT
+        COUNT( 1 ) AS num,
+        notice_id,
+        read_status
+        FROM
+        notice_details_info
+        <where>
+            <if test="noticeIds !=null and noticeIds.size >0">
+                AND notice_id IN
+                <foreach item="item" collection="noticeIds" separator="," open="(" close=")" index="">
+                    #{item, jdbcType=INTEGER}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY read_status
+    </select>
+</mapper>

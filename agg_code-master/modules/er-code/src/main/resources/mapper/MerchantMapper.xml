@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blue.code.mapper.MerchantMapper">
+
+    <resultMap type="com.blue.code.entity.Merchant" id="MerchantMap">
+        <result property="merchantId" column="merchant_id" jdbcType="INTEGER"/>
+        <result property="businessPlace" column="business_place" jdbcType="VARCHAR"/>
+        <result property="shopHeadPhotoUrl" column="shop_head_photo_url" jdbcType="VARCHAR"/>
+        <result property="publicityPictureUrl" column="publicity_picture_url" jdbcType="VARCHAR"/>
+        <result property="appletCodeUrl" column="applet_code_url" jdbcType="VARCHAR"/>
+        <result property="patrolCode" column="patrol_code" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="industryType" column="industry_type" jdbcType="INTEGER"/>
+        <result property="supervisionName" column="supervision_name" jdbcType="VARCHAR"/>
+        <result property="storeName" column="store_name" jdbcType="VARCHAR"/>
+        <result property="operatorName" column="operator_name" jdbcType="VARCHAR"/>
+        <result property="operatorPhone" column="operator_phone" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="addressCode" column="address_code" jdbcType="VARCHAR"/>
+        <result property="creditLevel" column="credit_level" jdbcType="INTEGER"/>
+        <result property="bankType" column="bank_type" jdbcType="INTEGER"/>
+        <result property="creator" column="creator" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updater" column="updater" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="supervisionId" column="supervision_id" jdbcType="INTEGER"/>
+        <result property="idCard" column="id_card" jdbcType="VARCHAR"/>
+        <result property="businessCardUrl" column="business_card_url" jdbcType="VARCHAR"/>
+        <result property="payCodeUrl" column="pay_code_url" jdbcType="VARCHAR"/>
+        <result property="merchantHealthCode" column="merchant_health_code" jdbcType="VARCHAR"/>
+        <result property="storeArea" column="store_area" jdbcType="INTEGER"/>
+        <result property="awayFromSchool" column="away_from_school" jdbcType="INTEGER"/>
+        <result property="referrer" column="referrer" jdbcType="VARCHAR"/>
+        <result property="referrerPhone" column="referrer_phone" jdbcType="VARCHAR"/>
+        <result property="wechatCompanyFlag" column="wechat_company_flag" jdbcType="INTEGER"/>
+        <result property="bdId" column="bd_id" jdbcType="INTEGER"/>
+        <result property="bd" column="bd" jdbcType="VARCHAR"/>
+        <result property="bdm" column="bdm" jdbcType="VARCHAR"/>
+        <result property="firstPayTime" column="first_pay_time" jdbcType="TIMESTAMP"/>
+        <result property="isTest" column="is_test" jdbcType="INTEGER"/>
+        <result property="isDelete" column="is_delete" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MerchantMap">
+        <include refid="baseSql"/>
+        where merchant_id = #{merchantId}
+    </select>
+    
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="merchantId" useGeneratedKeys="true">
+        insert into merchant(merchant_id, business_place, shop_head_photo_url, publicity_picture_url, applet_code_url, patrol_code, status, industry_type, supervision_name, store_name, operator_name, operator_phone, address, address_code, credit_level, bank_type, creator, create_time, updater, update_time, supervision_id, id_card, business_card_url, pay_code_url, merchant_health_code, store_area, away_from_school, referrer, referrer_phone, wechat_company_flag, bd_id, bd, bdm, first_pay_time, is_test, is_delete)
+        values (#{merchantId}, #{businessPlace}, #{shopHeadPhotoUrl}, #{publicityPictureUrl}, #{appletCodeUrl}, #{patrolCode}, #{status}, #{industryType}, #{supervisionName}, #{storeName}, #{operatorName}, #{operatorPhone}, #{address}, #{addressCode}, #{creditLevel}, #{bankType}, #{creator}, #{createTime}, #{updater}, #{updateTime}, #{supervisionId}, #{idCard}, #{businessCardUrl}, #{payCodeUrl}, #{merchantHealthCode}, #{storeArea}, #{awayFromSchool}, #{referrer}, #{referrerPhone}, #{wechatCompanyFlag}, #{bdId}, #{bd}, #{bdm}, #{firstPayTime}, #{isTest}, #{isDelete})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="merchantId" useGeneratedKeys="true">
+        insert into merchant(merchant_id, business_place, shop_head_photo_url, publicity_picture_url, applet_code_url, patrol_code, status, industry_type, supervision_name, store_name, operator_name, operator_phone, address, address_code, credit_level, bank_type, creator, create_time, updater, update_time, supervision_id, id_card, business_card_url, pay_code_url, merchant_health_code, store_area, away_from_school, referrer, referrer_phone, wechat_company_flag, bd_id, bd, bdm, first_pay_time, is_test, is_delete)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.merchantId}, #{entity.businessPlace}, #{entity.shopHeadPhotoUrl}, #{entity.publicityPictureUrl}, #{entity.appletCodeUrl}, #{entity.patrolCode}, #{entity.status}, #{entity.industryType}, #{entity.supervisionName}, #{entity.storeName}, #{entity.operatorName}, #{entity.operatorPhone}, #{entity.address}, #{entity.addressCode}, #{entity.creditLevel}, #{entity.bankType}, #{entity.creator}, #{entity.createTime}, #{entity.updater}, #{entity.updateTime}, #{entity.supervisionId}, #{entity.idCard}, #{entity.businessCardUrl}, #{entity.payCodeUrl}, #{entity.merchantHealthCode}, #{entity.storeArea}, #{entity.awayFromSchool}, #{entity.referrer}, #{entity.referrerPhone}, #{entity.wechatCompanyFlag}, #{entity.bdId}, #{entity.bd}, #{entity.bdm}, #{entity.firstPayTime}, #{entity.isTest}, #{entity.isDelete})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="merchantId" useGeneratedKeys="true">
+        insert into merchant(merchant_id, business_place, shop_head_photo_url, publicity_picture_url, applet_code_url, patrol_code, status, industry_type, supervision_name, store_name, operator_name, operator_phone, address, address_code, credit_level, bank_type, creator, create_time, updater, update_time, supervision_id, id_card, business_card_url, pay_code_url, merchant_health_code, store_area, away_from_school, referrer, referrer_phone, wechat_company_flag, bd_id, bd, bdm, first_pay_time, is_test, is_delete)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.merchantId}, #{entity.businessPlace}, #{entity.shopHeadPhotoUrl}, #{entity.publicityPictureUrl}, #{entity.appletCodeUrl}, #{entity.patrolCode}, #{entity.status}, #{entity.industryType}, #{entity.supervisionName}, #{entity.storeName}, #{entity.operatorName}, #{entity.operatorPhone}, #{entity.address}, #{entity.addressCode}, #{entity.creditLevel}, #{entity.bankType}, #{entity.creator}, #{entity.createTime}, #{entity.updater}, #{entity.updateTime}, #{entity.supervisionId}, #{entity.idCard}, #{entity.businessCardUrl}, #{entity.payCodeUrl}, #{entity.merchantHealthCode}, #{entity.storeArea}, #{entity.awayFromSchool}, #{entity.referrer}, #{entity.referrerPhone}, #{entity.wechatCompanyFlag}, #{entity.bdId}, #{entity.bd}, #{entity.bdm}, #{entity.firstPayTime}, #{entity.isTest}, #{entity.isDelete})
+        </foreach>
+        on duplicate key update
+         merchant_id = values(merchant_id) , business_place = values(business_place) , shop_head_photo_url = values(shop_head_photo_url) , publicity_picture_url = values(publicity_picture_url) , applet_code_url = values(applet_code_url) , patrol_code = values(patrol_code) , status = values(status) , industry_type = values(industry_type) , supervision_name = values(supervision_name) , store_name = values(store_name) , operator_name = values(operator_name) , operator_phone = values(operator_phone) , address = values(address) , address_code = values(address_code) , credit_level = values(credit_level) , bank_type = values(bank_type) , creator = values(creator) , create_time = values(create_time) , updater = values(updater) , update_time = values(update_time) , supervision_id = values(supervision_id) , id_card = values(id_card) , business_card_url = values(business_card_url) , pay_code_url = values(pay_code_url) , merchant_health_code = values(merchant_health_code) , store_area = values(store_area) , away_from_school = values(away_from_school) , referrer = values(referrer) , referrer_phone = values(referrer_phone) , wechat_company_flag = values(wechat_company_flag) , bd_id = values(bd_id) , bd = values(bd) , bdm = values(bdm) , first_pay_time = values(first_pay_time) , is_test = values(is_test) , is_delete = values(is_delete)     </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update merchant
+        <set>
+            <if test="businessPlace != null and businessPlace != ''">
+                business_place = #{businessPlace},
+            </if>
+            <if test="shopHeadPhotoUrl != null and shopHeadPhotoUrl != ''">
+                shop_head_photo_url = #{shopHeadPhotoUrl},
+            </if>
+            <if test="publicityPictureUrl != null and publicityPictureUrl != ''">
+                publicity_picture_url = #{publicityPictureUrl},
+            </if>
+            <if test="appletCodeUrl != null and appletCodeUrl != ''">
+                applet_code_url = #{appletCodeUrl},
+            </if>
+            <if test="patrolCode != null and patrolCode != ''">
+                patrol_code = #{patrolCode},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="industryType != null">
+                industry_type = #{industryType},
+            </if>
+            <if test="supervisionName != null and supervisionName != ''">
+                supervision_name = #{supervisionName},
+            </if>
+            <if test="storeName != null and storeName != ''">
+                store_name = #{storeName},
+            </if>
+            <if test="operatorName != null and operatorName != ''">
+                operator_name = #{operatorName},
+            </if>
+            <if test="operatorPhone != null and operatorPhone != ''">
+                operator_phone = #{operatorPhone},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="addressCode != null and addressCode != ''">
+                address_code = #{addressCode},
+            </if>
+            <if test="creditLevel != null">
+                credit_level = #{creditLevel},
+            </if>
+            <if test="bankType != null">
+                bank_type = #{bankType},
+            </if>
+            <if test="creator != null and creator != ''">
+                creator = #{creator},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updater != null and updater != ''">
+                updater = #{updater},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="supervisionId != null">
+                supervision_id = #{supervisionId},
+            </if>
+            <if test="idCard != null and idCard != ''">
+                id_card = #{idCard},
+            </if>
+            <if test="businessCardUrl != null and businessCardUrl != ''">
+                business_card_url = #{businessCardUrl},
+            </if>
+            <if test="payCodeUrl != null and payCodeUrl != ''">
+                pay_code_url = #{payCodeUrl},
+            </if>
+            <if test="merchantHealthCode != null and merchantHealthCode != ''">
+                merchant_health_code = #{merchantHealthCode},
+            </if>
+            <if test="storeArea != null">
+                store_area = #{storeArea},
+            </if>
+            <if test="awayFromSchool != null">
+                away_from_school = #{awayFromSchool},
+            </if>
+            <if test="referrer != null and referrer != ''">
+                referrer = #{referrer},
+            </if>
+            <if test="referrerPhone != null and referrerPhone != ''">
+                referrer_phone = #{referrerPhone},
+            </if>
+            <if test="wechatCompanyFlag != null">
+                wechat_company_flag = #{wechatCompanyFlag},
+            </if>
+            <if test="bdId != null">
+                bd_id = #{bdId},
+            </if>
+            <if test="bd != null and bd != ''">
+                bd = #{bd},
+            </if>
+            <if test="bdm != null and bdm != ''">
+                bdm = #{bdm},
+            </if>
+            <if test="firstPayTime != null">
+                first_pay_time = #{firstPayTime},
+            </if>
+            <if test="isTest != null">
+                is_test = #{isTest},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete},
+            </if>
+        </set>
+        where merchant_id = #{merchantId}
+    </update>
+
+    <sql id ="baseSql">
+        select
+          merchant_id, business_place, shop_head_photo_url, publicity_picture_url, applet_code_url, patrol_code, status, industry_type, supervision_name, store_name, operator_name, operator_phone, address, address_code, credit_level, bank_type, creator, create_time, updater, update_time, supervision_id, id_card, business_card_url, pay_code_url, merchant_health_code, store_area, away_from_school, referrer, referrer_phone, wechat_company_flag, bd_id, bd, bdm, first_pay_time, is_test, is_delete        from merchant
+    </sql>
+</mapper>
+

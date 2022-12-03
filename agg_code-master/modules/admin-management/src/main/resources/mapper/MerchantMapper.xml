@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fire.admin.mapper.MerchantMapper">
+
+    <resultMap id="noticeResultMap" type="com.fire.admin.entity.Merchant">
+        <id column="merchant_id" property="merchantId"/>
+        <result column="business_place" property="businessPlace"/>
+        <result column="shop_head_photo_url" property="shopHeadPhotoUrl"/>
+        <result column="publicity_picture_url" property="publicityPictureUrl"/>
+        <result column="applet_code_url" property="appletCodeUrl"/>
+        <result column="patrol_code" property="patrolCode"/>
+        <result column="status" property="status"/>
+        <result column="industry_type" property="industryType"/>
+        <result column="supervision_name" property="supervisionName"/>
+        <result column="store_name" property="storeName"/>
+        <result column="operator_name" property="operatorName"/>
+        <result column="operator_phone" property="operatorPhone"/>
+        <result column="address" property="address"/>
+        <result column="address_code" property="addressCode"/>
+        <result column="credit_level" property="creditLevel"/>
+        <result column="bank_type" property="bankType"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="supervision_id" property="supervisionId"/>
+        <result column="id_card" property="idCard"/>
+        <result column="business_card_url" property="businessCardUrl"/>
+        <result column="pay_code_url" property="payCodeUrl"/>
+        <result column="merchant_health_code" property="merchantHealthCode"/>
+        <result column="bd" property="bd"/>
+        <result column="bdm" property="bdm"/>
+        <result column="is_test" property="isTest"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="bd_id" property="bdId"/>
+        <result column="store_area" property="storeArea"/>
+        <result column="away_from_school" property="awayFromSchool"/>
+        <result column="referrer" property="referrer"/>
+        <result column="referrer_phone" property="referrerPhone"/>
+        <result column="wechat_company_flag" property="wechatCompanyFlag"/>
+    </resultMap>
+
+    <select id="selectMerchantByNotice" resultMap="noticeResultMap">
+        SELECT
+        merchant_id,
+        store_name,
+        operator_name,
+        operator_phone,
+        supervision_name,
+        supervision_id
+        FROM
+        merchant
+        <where>
+            <if test="query.supervisionIds !=null and query.supervisionIds.size() >0">
+                AND supervision_id IN
+                <foreach collection="query.supervisionIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="query.awayFromSchool !=null and query.awayFromSchool !=''">
+                AND away_from_school = #{query.awayFromSchool}
+            </if>
+            <if test="query.queryCategoryIds !=null and query.queryCategoryIds.size()>0">
+                AND industry_type IN
+                <foreach collection="query.queryCategoryIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="query.otherCondition !=null and query.otherCondition">
+                AND CONCAT(IFNULL(`store_name`,''),IFNULL(`operator_name`,''),IFNULL(`operator_phone`,'')) like CONCAT('%',#{query.otherCondition},'%')
+            </if>
+        </where>
+
+
+    </select>
+
+
+</mapper>
